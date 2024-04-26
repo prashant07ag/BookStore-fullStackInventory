@@ -41,7 +41,7 @@ import Logout from "../component/Logout";
         {
             path: '/book/:id',
             element: <SingleBook/>,
-            loader: ({params})=> fetch(`http://localhost:5000/book/${params.id}`)
+            loader: ({params})=> fetch(`https://book-store-server-site.vercel.app/book/${params.id}`)
         },
     ]
     },
@@ -66,7 +66,7 @@ import Logout from "../component/Logout";
             {
                 path: '/admin/dashboard/edit-book/:id',
                 element: <EditBooks/>,
-                loader: ({params})=> fetch(`http://localhost:5000/book/${params.id}`)
+                loader: ({params})=> fetch(`https://book-store-server-site.vercel.app/book/${params.id}`)
             }
             
         ]   

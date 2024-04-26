@@ -5,13 +5,13 @@ const ManageBooks = () => {
   const [allBooks, setAllBooks] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/all_books')
+    fetch('https://book-store-server-site.vercel.app/all_books')
       .then(res => res.json())
       .then(data => setAllBooks(data));
   }, []);
 
   const handleDelete = (id) => {
-    fetch(`http://localhost:5000/books/${id}`, {
+    fetch(`https://book-store-server-site.vercel.app/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
