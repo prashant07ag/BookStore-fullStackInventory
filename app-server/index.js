@@ -7,7 +7,7 @@ const { ObjectId } = require('mongodb');
 //middleware
 app.use(cors(
   {
-    origin: ["https://book-store-server-site.vercel.app"],
+    origin: ["https://book-store-server-site.vercel.app/"],
     methods: ['GET', 'POST', 'PATCH', 'DELETE'],
     credentials: true
   }
