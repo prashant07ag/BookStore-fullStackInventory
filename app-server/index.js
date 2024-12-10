@@ -3,11 +3,12 @@ const app = express()
 const port = 5000
 const cors = require('cors')
 const { ObjectId } = require('mongodb');
+require('dotenv').config();
 
 //middleware
 app.use(cors(
   {
-    origin: ["https://book-store-inventory-site.vercel.app"],
+    origin: ["https://book-store-inventory-site.vercel.app", "http://localhost:5173"],
     methods: ['GET', 'POST', 'PATCH', 'DELETE'],
     credentials: true
   }
@@ -21,7 +22,7 @@ app.get('/', (req, res) => {
 
 // mongodb
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://bookstore_demo:kYeEHBeVMiYfVnxN@cluster0.jsccyr4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const uri = process.env.MONGODB_URI;
 
 const client = new MongoClient(uri, {
   serverApi: {
