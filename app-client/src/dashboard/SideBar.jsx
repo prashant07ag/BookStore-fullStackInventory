@@ -23,11 +23,6 @@ const SideBar = () => {
             label: "Manage Books"
         },
         {
-            href: "/login",
-            icon: HiArrowSmRight,
-            label: "Sign In"
-        },
-        {
             href: "/logout",
             icon: HiTable,
             label: "Log Out"
