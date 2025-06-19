@@ -23,16 +23,6 @@ const SideBar = () => {
             label: "Manage Books"
         },
         {
-            href: "#",
-            icon: HiUser,
-            label: "Users"
-        },
-        {
-            href: "#",
-            icon: HiShoppingBag,
-            label: "Products"
-        },
-        {
             href: "/login",
             icon: HiArrowSmRight,
             label: "Sign In"
