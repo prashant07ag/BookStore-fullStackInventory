@@ -17,9 +17,9 @@ const BookCard = ({ headline, books }) => {
                     slidesPerView={1}
                     spaceBetween={10}
                     navigation={true}
-                    pagination={{
-                        clickable: true,
-                    }}
+                    // pagination={{
+                    //     clickable: true,
+                    // }}
                     breakpoints={{
                         640: {
                             slidesPerView: 2,

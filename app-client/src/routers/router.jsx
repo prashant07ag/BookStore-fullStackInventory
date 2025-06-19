@@ -17,6 +17,9 @@ import SignUp from "../component/SignUp";
 import Signin from "../component/Signin";
 import PrivateRoute from "./PrivateRoute";
 import Logout from "../component/Logout";
+import ContactUs from "../component/ContactUs";
+import PrivacyPolicy from "../component/PrivacyPolicy";
+import TermsOfService from "../component/TermsOfService";
   const router = createBrowserRouter([
     {
       path: "/",
@@ -43,6 +46,18 @@ import Logout from "../component/Logout";
             element: <SingleBook/>,
             loader: ({params})=> fetch(`https://book-store-server-site.vercel.app/book/${params.id}`)
         },
+        {
+            path: '/contact',
+            element: <ContactUs/>
+        },
+        {
+            path: '/privacy-policy',
+            element: <PrivacyPolicy/>
+        },
+        {
+            path: '/terms',
+            element: <TermsOfService/>
+        }
     ]
     },
     {

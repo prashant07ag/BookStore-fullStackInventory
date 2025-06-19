@@ -1,75 +1,55 @@
-import React from 'react'
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
-    <footer className="relative bg-black pt-8 pb-6">
+    <footer className="bg-black text-white pt-12 pb-6">
       <div className="container mx-auto px-4">
-        <div className="flex flex-wrap text-left lg:text-left">
-          <div className="w-full lg:w-6/12 px-4">
-            <h4 className="text-3xl fonat-semibold text-white">Let's keep in touch!</h4>
-            <h5 className="text-lg mt-0 mb-2 text-white">
-              Find us on any of these platforms, we respond 1-2 business days.
-            </h5>
-            <div className="mt-6 lg:mb-0 mb-6">
-              <button className="bg-white text-lightBlue-400 shadow-lg font-normal h-10 w-10 items-center justify-center align-center rounded-full outline-none focus:outline-none mr-2" type="button">
-                <i className="fab fa-twitter"></i></button><button className="bg-white text-lightBlue-600 shadow-lg font-normal h-10 w-10 items-center justify-center align-center rounded-full outline-none focus:outline-none mr-2" type="button">
-                <i className="fab fa-facebook-square"></i></button><button className="bg-white text-pink-400 shadow-lg font-normal h-10 w-10 items-center justify-center align-center rounded-full outline-none focus:outline-none mr-2" type="button">
-                <i className="fab fa-dribbble"></i></button><button className="bg-white text-white shadow-lg font-normal h-10 w-10 items-center justify-center align-center rounded-full outline-none focus:outline-none mr-2" type="button">
-                <i className="fab fa-github"></i>
-              </button>
-            </div>
-          </div>
-          <div className="w-full lg:w-6/12 px-4">
-            <div className="flex flex-wrap items-top mb-6">
-              <div className="w-full lg:w-4/12 px-4 ml-auto">
-                <span className="block uppercase text-white text-sm font-semibold mb-2">Useful Links</span>
-                <ul className="list-unstyled">
-                  <li>
-                    <a className="text-white hover:text-white font-semibold block pb-2 text-sm" href="https://www.creative-tim.com/presentation?ref=njs-profile">About Us</a>
-                  </li>
-                  <li>
-                    <a className="text-white hover:text-white font-semibold block pb-2 text-sm" href="https://blog.creative-tim.com?ref=njs-profile">Blog</a>
-                  </li>
-                  <li>
-                    <a className="text-white hover:text-white font-semibold block pb-2 text-sm" href="https://www.github.com/creativetimofficial?ref=njs-profile">Github</a>
-                  </li>
-                  <li>
-                    <a className="text-white hover:text-white font-semibold block pb-2 text-sm" href="https://www.creative-tim.com/bootstrap-themes/free?ref=njs-profile">Free Products</a>
-                  </li>
-                </ul>
-              </div>
-              <div className="w-full lg:w-4/12 px-4">
-                <span className="block uppercase text-white text-sm font-semibold mb-2">Other Resources</span>
-                <ul className="list-unstyled">
-                  <li>
-                    <a className="text-white hover:text-white font-semibold block pb-2 text-sm" href="https://github.com/creativetimofficial/notus-js/blob/main/LICENSE.md?ref=njs-profile">MIT License</a>
-                  </li>
-                  <li>
-                    <a className="text-white hover:text-white font-semibold block pb-2 text-sm" href="https://creative-tim.com/terms?ref=njs-profile">Terms &amp; Conditions</a>
-                  </li>
-                  <li>
-                    <a className="text-white hover:text-white font-semibold block pb-2 text-sm" href="https://creative-tim.com/privacy?ref=njs-profile">Privacy Policy</a>
-                  </li>
-                  <li>
-                    <a className="text-white hover:text-white font-semibold block pb-2 text-sm" href="https://creative-tim.com/contact-us?ref=njs-profile">Contact Us</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
+        {/* Top Section */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+          <div>
+            <h4 className="text-2xl font-semibold mb-2">Let's keep in touch!</h4>
+            <p className="text-sm text-gray-300">Connect with us on our social platforms or reach out via email.</p>
           </div>
         </div>
-        <hr className="my-6 border-blueGray-300"/>
-          <div className="flex flex-wrap items-center md:justify-between justify-center">
-            <div className="w-full md:w-4/12 px-4 mx-auto text-center">
-              <div className="text-sm text-white font-semibold py-1">
-                Crafted by <a href="https://www.linkedin.com/in/prashant-agrawal-4b530b201/" className="text-white hover:text-blue-700" target="_blank">Prashant Agrawal</a>
-                  <a href="https://www.creative-tim.com?ref=njs-profile" className="text-white hover:text-white"> from India</a>.
-              </div>
-            </div>
+
+        {/* Link Sections */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          <div>
+            <h5 className="uppercase text-sm font-semibold mb-3">Quick Links</h5>
+            <ul>
+              <li><Link to="/" className="text-gray-300 hover:text-white text-sm block mb-2">Home</Link></li>
+              <li><Link to="/about" className="text-gray-300 hover:text-white text-sm block mb-2">About Us</Link></li>
+              <li><Link to="/shop" className="text-gray-300 hover:text-white text-sm block mb-2">Shop</Link></li>
+              <li><Link to="/contact" className="text-gray-300 hover:text-white text-sm block mb-2">Contact</Link></li>
+            </ul>
           </div>
+          <div>
+            <h5 className="uppercase text-sm font-semibold mb-3">Resources</h5>
+            <ul>
+              <li><Link to="/privacy-policy" className="text-gray-300 hover:text-white text-sm block mb-2">Privacy Policy</Link></li>
+              <li><Link to="/terms" className="text-gray-300 hover:text-white text-sm block mb-2">Terms & Conditions</Link></li>
+            </ul>
+          </div>
+          <div>
+            <h5 className="uppercase text-sm font-semibold mb-3">Follow Me</h5>
+            <ul>
+              <li><a href="https://www.linkedin.com/in/prashant-agrawal-4b530b201/" target="_blank" rel="noreferrer" className="text-gray-300 hover:text-white text-sm block mb-2">LinkedIn</a></li>
+              <li><a href="https://github.com/prashant07ag" target="_blank" rel="noreferrer" className="text-gray-300 hover:text-white text-sm block mb-2">GitHub</a></li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom Section */}
+        <div className="border-t border-gray-700 pt-4 text-center text-sm">
+          <p>
+            © {new Date().getFullYear()} Bookstore. Crafted by 
+            <a href="https://www.linkedin.com/in/prashant-agrawal-4b530b201/" target="_blank" rel="noreferrer" className="text-blue-400 hover:underline ml-1">Prashant Agrawal</a>
+          </p>
+        </div>
       </div>
     </footer>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;
