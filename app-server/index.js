@@ -1,162 +1,108 @@
-const express = require('express')
-const app = express()
-const port = 5000
-const cors = require('cors')
+const express = require('express');
 const mongoose = require('mongoose');
-const { ObjectId } = require('mongodb');
+const cors = require('cors');
 require('dotenv').config();
 
-//middleware
-app.use(cors(
-  {
-    origin: ["https://book-store-inventory-site.vercel.app", "http://localhost:5173"],
-    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-    credentials: true
-  }
-));
+const app = express();
+const port = 5000;
+
+// Middleware
+app.use(cors({
+  origin: ["https://book-store-inventory-site.vercel.app", "http://localhost:5173"],
+  methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+  credentials: true
+}));
 app.use(express.json());
 
-
 app.get('/', (req, res) => {
-  res.send('Hello prashant!')
-})
-
-// Mongoose connection
-const mongoConnect = process.env.MONGODB_URI;
-mongoose.connect(mongoConnect, {
-  // Note: The 'server' option is deprecated in newer versions of mongoose
-  // Using modern connection options instead
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  serverSelectionTimeoutMS: 5000,
-  socketTimeoutMS: 45000,
-})
-.then(() => {
-  console.log('Connected to MongoDB via Mongoose');
-})
-.catch((error) => {
-  console.error('Mongoose connection error:', error);
+  res.send('Hello prashant!');
 });
 
-// Handle mongoose connection events
-mongoose.connection.on('connected', () => {
-  console.log('Mongoose connected to MongoDB');
-});
+// MongoDB connection with auto-reconnect
+const connectWithRetry = () => {
+  mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  }).then(() => {
+    console.log('MongoDB connected');
+  }).catch(err => {
+    console.error('MongoDB connection error. Retrying in 5s...', err);
+    setTimeout(connectWithRetry, 5000);
+  });
+};
 
-mongoose.connection.on('error', (err) => {
-  console.error('Mongoose connection error:', err);
-});
+connectWithRetry();
 
-mongoose.connection.on('disconnected', () => {
-  console.log('Mongoose disconnected from MongoDB');
-});
+const bookSchema = new mongoose.Schema({}, { strict: false }); // Use strict schema for validation if needed
+const Book = mongoose.model('Book', bookSchema, 'books');
 
-// Graceful shutdown
-process.on('SIGINT', async () => {
-  await mongoose.connection.close();
-  console.log('Mongoose connection closed through app termination');
-  process.exit(0);
-});
-
-// mongodb
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = process.env.MONGODB_URI;
-
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
-});
-
-async function run() {
+// Routes
+app.post("/upload_book", async (req, res) => {
   try {
-    await client.connect();
-    const bookCollections = client.db("BookStore_db").collection("books")
-    app.post("/upload_book", async (req, res) => {
-      const data = req.body;
-      const result = await bookCollections.insertOne(data);
-      res.send(result);
-    })
-
-    // get all books data
-    app.get("/all_books", async (req, res) => {
-      const books = bookCollections.find();
-      const result = await books.toArray();
-      res.send(result);
-    })
-
-    // update a book data
-    app.patch("/books/:id", async (req, res) => {
-      const id = req.params.id;
-      const updateBookData = req.body;
-
-      try {
-        const result = await bookCollections.updateOne(
-          { _id: new ObjectId(id) }, // Filter: Find the document with the specified id
-          { $set: {...updateBookData} }, 
-          { upsert: true }
-        );
-
-        res.send(result);
-      } catch (error) {
-        console.error("Error updating book:", error);
-        res.status(500).send("An error occurred while updating the book.");
-      }
-    });
-    // deletebook
-    app.delete("/books/:id", async (req, res) => {
-      const id = req.params.id;
-      try {
-        const result = await bookCollections.deleteOne({ _id: new ObjectId(id) });
-        res.send(result);
-      } catch (error) {
-        console.error("Error deleting book:", error);
-        res.status(500).send("An error occurred while deleting the book.");
-      }
-    });
-    // get book by category
-    app.get("/all_books/:category", async (req, res) => {
-      const category = req.params.category;
-      try {
-        const result = await bookCollections.find({ category: category }).toArray();
-        res.send(result);
-      } catch (error) {
-        console.error("Error getting book:", error);
-        res.status(500).send("An error occurred while getting the book.");
-      }
-    });
-    // get book by author
-    app.get("/books/:author", async (req, res) => {
-      const author = req.params.author;
-      try {
-        const result = await bookCollections.find({ authorName: author }).toArray();
-        res.send(result);
-      } catch (error) {
-        console.error("Error getting book:", error);
-        res.status(500).send("An error occurred while getting the book.");
-      }
-    });
-
-    //single book get
-    app.get("/book/:id", async(req, res)=> {
-      const id = req.params.id;
-      const filter = {_id: new ObjectId(id)};
-      const result = await bookCollections.findOne(filter);
-      res.send(result);
-    })
-    // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
-  } finally {
-    // Ensures that the client will close when you finish/error
-    // await client.close();
+    const data = new Book(req.body);
+    const result = await data.save();
+    res.send(result);
+  } catch (err) {
+    console.error("Upload error:", err);
+    res.status(500).send("Upload failed");
   }
-}
-run().catch(console.dir);
+});
 
+app.get("/all_books", async (req, res) => {
+  const result = await Book.find();
+  res.send(result);
+});
+
+app.patch("/books/:id", async (req, res) => {
+  try {
+    const result = await Book.findByIdAndUpdate(req.params.id, req.body, { new: true, upsert: true });
+    res.send(result);
+  } catch (err) {
+    console.error("Update error:", err);
+    res.status(500).send("Update failed");
+  }
+});
+
+app.delete("/books/:id", async (req, res) => {
+  try {
+    const result = await Book.findByIdAndDelete(req.params.id);
+    res.send(result);
+  } catch (err) {
+    console.error("Delete error:", err);
+    res.status(500).send("Delete failed");
+  }
+});
+
+app.get("/all_books/:category", async (req, res) => {
+  try {
+    const result = await Book.find({ category: req.params.category });
+    res.send(result);
+  } catch (err) {
+    console.error("Get by category error:", err);
+    res.status(500).send("Failed to get by category");
+  }
+});
+
+app.get("/books/:author", async (req, res) => {
+  try {
+    const result = await Book.find({ authorName: req.params.author });
+    res.send(result);
+  } catch (err) {
+    console.error("Get by author error:", err);
+    res.status(500).send("Failed to get by author");
+  }
+});
+
+app.get("/book/:id", async (req, res) => {
+  try {
+    const result = await Book.findById(req.params.id);
+    res.send(result);
+  } catch (err) {
+    console.error("Get single book error:", err);
+    res.status(500).send("Failed to get book");
+  }
+});
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+  console.log(`Server running on port ${port}`);
+});
