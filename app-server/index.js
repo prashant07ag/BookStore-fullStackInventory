@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const port = 5000
 const cors = require('cors')
+const mongoose = require('mongoose');
 const { ObjectId } = require('mongodb');
 require('dotenv').config();
 
@@ -19,6 +20,43 @@ app.use(express.json());
 app.get('/', (req, res) => {
   res.send('Hello prashant!')
 })
+
+// Mongoose connection
+const mongoConnect = process.env.MONGODB_URI;
+mongoose.connect(mongoConnect, {
+  // Note: The 'server' option is deprecated in newer versions of mongoose
+  // Using modern connection options instead
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 5000,
+  socketTimeoutMS: 45000,
+})
+.then(() => {
+  console.log('Connected to MongoDB via Mongoose');
+})
+.catch((error) => {
+  console.error('Mongoose connection error:', error);
+});
+
+// Handle mongoose connection events
+mongoose.connection.on('connected', () => {
+  console.log('Mongoose connected to MongoDB');
+});
+
+mongoose.connection.on('error', (err) => {
+  console.error('Mongoose connection error:', err);
+});
+
+mongoose.connection.on('disconnected', () => {
+  console.log('Mongoose disconnected from MongoDB');
+});
+
+// Graceful shutdown
+process.on('SIGINT', async () => {
+  await mongoose.connection.close();
+  console.log('Mongoose connection closed through app termination');
+  process.exit(0);
+});
 
 // mongodb
 const { MongoClient, ServerApiVersion } = require('mongodb');
