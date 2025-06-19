@@ -14,7 +14,7 @@ const BookCard = ({ headline, books }) => {
             <h2 className='text-4xl text-center font-bold text-black my-5'>{headline}</h2>
             <div className='mt-12'>
                 <Swiper
-                    slidesPerView={1}
+                    slidesPerView={1.2}
                     spaceBetween={10}
                     navigation={true}
                     // pagination={{

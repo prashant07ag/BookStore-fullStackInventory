@@ -57,7 +57,7 @@ const Navbar = () => {
 
                     {/* Mobile Menu */}
                     {isMenuOpen && (
-                        <div className="absolute top-16 left-0 right-0 bg-blue-700 px-6 py-4 space-y-4 z-20 md:hidden">
+                        <div className="absolute top-16 left-0 right-0 bg-cyan-200 px-6 py-4 space-y-4 z-20 md:hidden">
                             {navItems.map((item, index) => (
                                 <NavLink key={index} to={item.path} className={navLinkClass} onClick={() => setMenuOpen(false)}>
                                     {item.link}

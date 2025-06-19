@@ -10,7 +10,7 @@ const Hero = () => {
                     </h2>
                     <p className='w-4/5'>Welcome to our online book marketplace where you can buy and sell used textbooks, novels, and more. Save money on your book purchases and earn cash by selling books you no longer need. Join our community of book lovers and discover great deals today!</p>
                 </div>
-                <div className='md:w-1/2'>
+                <div className='md:w-1/2 hidden md:block'>
                     <BannerCard></BannerCard>
                 </div>
             </div>
